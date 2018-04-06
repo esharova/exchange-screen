@@ -7,7 +7,6 @@ import CurrencyGbp from 'arui-feather/icon/currency/currency-gbp';
 
 import { Currencies } from '../../utils/constants';
 
-
 export default class CurrencyIcon extends React.Component {
     static propTypes = {
         currency: Type.string

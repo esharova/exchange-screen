@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-filename-extension */
 import express from 'express';
 import Boom from 'boom';
 import handlebars from 'handlebars';
@@ -60,7 +61,7 @@ router.get(/^\/.*/, function (request, res) {
         return Boom.badImplementation();
     }
 
-    res.send(page);
+    return res.send(page);
 });
 
 export default router;

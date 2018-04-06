@@ -16,7 +16,8 @@ export default class SourceCurrencySlide extends React.Component {
         account: Type.shape(),
         currencyRates: Type.shape(),
         sourceCurrency: Type.string,
-        onChangeExchangingAmount: Type.func
+        onChangeExchangingAmount: Type.func,
+        exchangingAmount: Type.string
     };
 
     componentDidMount() {

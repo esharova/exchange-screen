@@ -51,7 +51,9 @@ const GET_SOURCE_TARGET_CURRENCY = gql`
 @cn('exchange-screen')
 export default class CharacteristicsPage extends React.Component {
     static propTypes = {
-
+        client: Type.shape({
+            writeData: Type.func
+        })
     };
 
     state = {
@@ -93,7 +95,7 @@ export default class CharacteristicsPage extends React.Component {
     renderSourceAndTargetCurrency(cn, accounts, currencyRates) {
         return (
             <Query query={ GET_SOURCE_TARGET_CURRENCY }>
-                { ({ data: { sourceCurrency, exchangingAmount, targetCurrency } }) => (
+                { ({ data: { sourceCurrency, exchangingAmount } }) => (
                     <Fragment>
                         <Carousel
                             className={ cn('source-currency') }
@@ -148,7 +150,7 @@ export default class CharacteristicsPage extends React.Component {
     @autobind
     handleChangeTargetCurrency(targetPosition, sourceCurrency, accounts) {
         this.props.client.writeData({
-            data: { targetCurrency: this.getFilteredAccounts(accounts,sourceCurrency)[targetPosition].currency }
+            data: { targetCurrency: this.getFilteredAccounts(accounts, sourceCurrency)[targetPosition].currency }
         });
     }
 

@@ -4,7 +4,7 @@ const defaultState = {
     sourceCurrency: 'GBP',
     targetCurrency: 'EUR',
     exchangingAmount: ''
-}
+};
 
 const stateLink = cache => withClientState({
     cache,

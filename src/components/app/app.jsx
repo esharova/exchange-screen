@@ -14,6 +14,7 @@ import './app.css';
 @cn('app')
 export class App extends React.Component {
     static propTypes = {
+        error: Type.shape()
     };
 
     render(cn) {
@@ -30,8 +31,8 @@ export class App extends React.Component {
         );
     }
 
-    renderErrorPage(cn) {
-        return 'some-error-page';
+    renderErrorPage() {
+        return null;
     }
 
     renderRoutes() {

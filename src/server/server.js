@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint no-console: ["error", { allow: ["log", "error"] }] */
 import 'babel-polyfill';
 

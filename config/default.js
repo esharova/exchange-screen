@@ -7,7 +7,7 @@ const clientConfig = {
 
 module.exports = {
     proxyAssets: {
-        host: '192.168.1.5',
+        host: 'localhost',
         port: 9090
     },
     devtools: true,

@@ -16,7 +16,7 @@ Requirements: node js >= 8.9.0 & npm >= 5.7.1 (I tested this application on this
 
 `npm run start`
 
-And just open [link in you browser](http://localhost:8080/exchange)
+And just open [link in you browser](http://localhost:8080/exchange "http://localhost:8080/exchange")
 
  Notice!
 

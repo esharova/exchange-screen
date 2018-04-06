@@ -1,9 +1,11 @@
 import express from 'express';
 import { graphiqlExpress } from 'apollo-server-express';
 
-const route = express.Router();
+import config from 'config';
 
-route.get('/', graphiqlExpress({ endpointURL: '/graphql' }));
+const route = express.Router({});
+
+route.get('/', graphiqlExpress({ endpointURL: config.server.api.graphql.uri }));
 
 export default route;
 

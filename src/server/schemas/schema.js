@@ -8,7 +8,7 @@ import accountsResolvers from './accounts/accounts-resolvers';
 
 const typeDefs = `
     type Query {
-      currencyRates: CurrencyRates
+      currencyRates(base: String): CurrencyRates
       accounts: [Account]
     }
     ${currencyRatesTypes}

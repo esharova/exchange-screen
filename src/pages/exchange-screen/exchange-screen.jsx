@@ -18,8 +18,8 @@ import TargetCurrencySlide from '../../components/target-currency-slide/target-c
 import './exchange-screen.css';
 
 const RATES = gql`
-    query currencyRates {
-        currencyRates {
+    query currencyRates($base: String!) {
+        currencyRates(base: $base) {
             base
             rates {
                 EUR
@@ -57,7 +57,8 @@ export default class CharacteristicsPage extends React.Component {
     };
 
     state = {
-        sourcePosition: 0
+        sourcePosition: 0,
+        baseCurrency: 'USD'
     }
 
     customCarouselProps = {
@@ -70,11 +71,12 @@ export default class CharacteristicsPage extends React.Component {
 
     render(cn) {
         return (
-            <Query query={ ACCOUNTS }>
+            <Query query={ ACCOUNTS } >
                 { ({ loading: loadingAccounts, data: { accounts } }) => (
                     <Query
                         query={ RATES }
                         pollInterval={ 10000 }
+                        variables={ { base: this.state.baseCurrency } }
                     >
                         { ({ loading: loadingRates, data: { currencyRates } }) => {
                             if (loadingAccounts || loadingRates) {

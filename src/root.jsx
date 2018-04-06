@@ -11,11 +11,10 @@ import { ApolloLink } from 'apollo-link';
 import App from './components/app/app';
 import localStateLink from './resolvers/local-state';
 
-const GRAPHQL_SERVER_ENDPOINT = '/graphql';
 const cache = new InMemoryCache();
 
 const client = new ApolloClient({
-    link: ApolloLink.from([localStateLink(cache), new BatchHttpLink({ uri: GRAPHQL_SERVER_ENDPOINT })]),
+    link: ApolloLink.from([localStateLink(cache), new BatchHttpLink()]),
     cache
 });
 

@@ -24,8 +24,15 @@ module.exports = {
 
     server: {
         requestTimeout: 20000,
+        cacheMaxAge: 30000,
         port: 8080,
         api: {
+            graphql: {
+                uri: '/graphql'
+            },
+            graphiql: {
+                uri: '/graphiql'
+            },
             currencyRates: {
                 uri: 'http://localhost:3001/currencyRates',
                 method: 'GET'

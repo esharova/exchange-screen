@@ -11,10 +11,6 @@ body {
         font-size: 30px;
     }
 
-    .input_theme_alfa-on-color .input__box {
-        box-shadow: none;
-    }
-
     .input_size_xl .input__box {
         font-size: 30px;
     }

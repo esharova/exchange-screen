@@ -18,8 +18,8 @@ if (config.useMocks) {
 
 app.use(express.static('.build/assets'));
 
-app.use('/graphql', graphqlRoute);
-app.use('/graphiql', graphiqlRoute);
+app.use(config.server.api.graphql.uri, graphqlRoute);
+app.use(config.server.api.graphiql.uri, graphiqlRoute);
 app.use('/', indexRoute);
 
 app.listen(SERVER_PORT, () => {

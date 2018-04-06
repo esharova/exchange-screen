@@ -1,0 +1,9 @@
+type CurrencyRates {
+    base: String
+    rates: Rates
+}
+
+type Rates {
+    EUR: Float
+    GBP: Float
+}

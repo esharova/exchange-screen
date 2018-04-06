@@ -1,0 +1,54 @@
+.target-currency-slide {
+    &__arrow {
+        width: 0;
+        height: 0;
+        position: absolute;
+        left: 50%;
+        top:0;
+        margin-left: 10px;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+
+        border-top: 10px solid #1672BF;
+    }
+
+    &__currency {
+        margin: 55px 50px;
+    }
+
+    &__currency-amount, &__exchanging-amount {
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    &__currency-amount {
+        width: 40%;
+    }
+
+    &__exchanging-amount {
+        text-align: right;
+        width: 55%;
+        float: right;
+    }
+
+    &__account-amount, &__rates, .icon {
+        opacity: .6;
+    }
+
+    &__operation {
+        margin-right: 10px;
+        width: 5%;
+    }
+
+    &__converted-amount {
+        width: 85%;
+    }
+}
+
+@media (--small-only), (--medium-only) {
+    .target-currency-slide {
+        &__currency {
+            margin: 55px 30px;
+        }
+    }
+}

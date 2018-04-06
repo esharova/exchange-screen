@@ -1,0 +1,26 @@
+@import 'arui-feather/main.css';
+
+body {
+    background-image: none;
+}
+
+.app {
+    height: 100%;
+
+    .label_size_xl {
+        font-size: 30px;
+    }
+
+    .input_theme_alfa-on-color .input__box {
+        box-shadow: none;
+    }
+
+    .input_size_xl .input__box {
+        font-size: 30px;
+    }
+
+    .input__control {
+        text-align: right;
+    }
+}
+

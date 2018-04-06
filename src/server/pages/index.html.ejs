@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Exchange UI</title>
+        <link rel="shortcut icon" href="{{{ contextRoot }}}/assets/favicon.ico" />
+        <meta name="msapplication-config" content="{{{ contextRoot }}}/assets/browserconfig.xml" />
+        <%= htmlWebpackPlugin.files.css.map(f => `<link href="{{{ contextRoot }}}{{{ assetsPath }}}${f}" rel="stylesheet">`).join('') %>
+    </head>
+    <body>
+        <div id="react-app">{{{ content }}}</div>
+        <%= htmlWebpackPlugin.files.js.map(f => `<script type="text/javascript" src="{{{ contextRoot }}}{{{ assetsPath }}}${f}"></script>`).join('') %>
+        <script>window.__main();</script>
+    </body>
+</html>

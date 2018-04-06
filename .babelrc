@@ -1,0 +1,6 @@
+{
+    "presets": ["arui-presets/babel"],
+    "plugins": [
+        "babel-plugin-inline-import"
+    ]
+}

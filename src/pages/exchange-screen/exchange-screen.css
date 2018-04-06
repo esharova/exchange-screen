@@ -1,0 +1,41 @@
+.exchange-screen {
+    width: 40%;
+    height: 100%;
+    margin: auto;
+
+    &__source-currency, &__target-currency {
+        height: 50%;
+
+        .carousel, .slider, .slider-wrapper, .slide {
+            height: 100%;
+            text-align: left;
+        }
+    }
+
+    &__source-currency {
+        .carousel .slide {
+            background-image: url('./images/source-currency-background.jpg');
+            background-size: cover;
+        }
+    }
+
+    &__target-currency {
+        .carousel .slide {
+            background-color: #1251A0;
+        }
+    }
+}
+
+@media (--small-only), (--medium-only) {
+    .exchange-screen {
+        width: 100%;
+
+        &__source-currency {
+            height: 35%;
+        }
+
+        &__target-currency {
+            height: 65%;
+        }
+    }
+}

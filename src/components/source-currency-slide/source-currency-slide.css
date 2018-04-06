@@ -1,0 +1,45 @@
+.source-currency-slide {
+    &__exchange {
+        float: right;
+    }
+
+    &__currency {
+        margin: 55px 50px;
+    }
+
+    &__currency-amount, &__exchanging-amount {
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    &__currency-amount {
+        width: 50%;
+    }
+
+    &__account-amount {
+        opacity: .6;
+    }
+
+    &__exchanging-amount {
+        width: 40%;
+        margin-top: -15px;
+        float: right;
+        font-size: 30px;
+    }
+
+    &__operation {
+        width: 5%;
+    }
+
+    &__money-input {
+        width: 85%;
+    }
+}
+
+@media (--small-only), (--medium-only) {
+    .source-currency-slide {
+        &__currency {
+            margin: 55px 30px;
+        }
+    }
+}

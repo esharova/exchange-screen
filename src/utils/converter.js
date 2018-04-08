@@ -7,6 +7,11 @@ export function convert({ exchangingAmount, sourceCurrency, targetCurrency }, { 
         rate = rates[targetCurrency];
     }
 
+    if (sourceCurrency === base && targetCurrency === base) {
+        convertedAmount = exchangingAmount;
+        rate = 1;
+    }
+
     if (rates[sourceCurrency]) {
         const amountInBaseCurrency = (1 / rates[sourceCurrency]) * exchangingAmount;
         const rateToBaseCurrency = 1 / rates[sourceCurrency];

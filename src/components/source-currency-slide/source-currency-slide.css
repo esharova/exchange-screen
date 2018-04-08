@@ -1,4 +1,18 @@
+@import '../../components/app/vars.css';
+
 .source-currency-slide {
+    &__rates {
+        display: inline-block;
+        top: 10px;
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%);
+        padding: 2px 5px 2px 3px;
+        border: 1px solid rgba(255, 255, 255, .7);
+        border-radius: 3px;
+        background-color: var(--targetCurrencyBackgroundColor);
+    }
+
     &__exchange {
         float: right;
     }

@@ -8,6 +8,8 @@ import Button from 'arui-feather/button';
 
 import CurrencyIcon from '../currency-icon/currency-icon';
 
+import { convert } from '../../utils/converter';
+
 import './source-currency-slide.css';
 
 @cn('source-currency-slide')
@@ -16,6 +18,7 @@ export default class SourceCurrencySlide extends React.Component {
         account: Type.shape(),
         currencyRates: Type.shape(),
         sourceCurrency: Type.string,
+        targetCurrency: Type.string,
         onChangeExchangingAmount: Type.func,
         exchangingAmount: Type.string
     };
@@ -35,12 +38,24 @@ export default class SourceCurrencySlide extends React.Component {
     }
 
     renderPanelButtons(cn) {
+        const { sourceCurrency, targetCurrency, currencyRates } = this.props;
+        const { rate } = convert({ exchangingAmount: 0, sourceCurrency, targetCurrency }, currencyRates);
         return (
             <div className={ cn('panel-buttons') }>
                 <Button
                     className={ cn('cancel') }
                     text='Cancel'
                 />
+                <div className={ cn('rates') }>
+                    <CurrencyIcon currency={ sourceCurrency } />
+                    <Label size='s'>
+                        { '1 = ' }
+                    </Label>
+                    <CurrencyIcon currency={ targetCurrency } />
+                    <Label size='s'>
+                        { rate }
+                    </Label>
+                </div>
                 <Button
                     className={ cn('exchange') }
                     text='Exchange'

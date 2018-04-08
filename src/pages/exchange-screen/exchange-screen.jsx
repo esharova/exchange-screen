@@ -97,7 +97,7 @@ export default class CharacteristicsPage extends React.Component {
     renderSourceAndTargetCurrency(cn, accounts, currencyRates) {
         return (
             <Query query={ GET_SOURCE_TARGET_CURRENCY }>
-                { ({ data: { sourceCurrency, exchangingAmount } }) => (
+                { ({ data: { sourceCurrency, exchangingAmount, targetCurrency } }) => (
                     <Fragment>
                         <Carousel
                             className={ cn('source-currency') }
@@ -113,6 +113,8 @@ export default class CharacteristicsPage extends React.Component {
                                     account={ account }
                                     exchangingAmount={ exchangingAmount }
                                     sourceCurrency={ sourceCurrency }
+                                    targetCurrency={ targetCurrency }
+                                    currencyRates={ currencyRates }
                                     onChangeExchangingAmount={ this.handleChangeExchangingAmount }
                                 />
                             )) }

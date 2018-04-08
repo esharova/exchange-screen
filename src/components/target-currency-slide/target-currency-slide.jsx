@@ -21,7 +21,6 @@ export default class TargetCurrencySlide extends React.Component {
     render(cn) {
         return (
             <div className={ cn() }>
-                <div className={ cn('arrow') } />
                 { this.renderCurrency(cn) }
             </div>
         );

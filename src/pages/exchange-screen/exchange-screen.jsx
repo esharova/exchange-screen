@@ -117,6 +117,9 @@ export default class CharacteristicsPage extends React.Component {
                                 />
                             )) }
                         </Carousel>
+                        <div className={ cn('direction') }>
+                            <div className={ cn('arrow') } />
+                        </div>
                         <Carousel
                             className={ cn('target-currency') }
                             onChange={ (targetPosition) => {

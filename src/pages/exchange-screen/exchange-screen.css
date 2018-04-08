@@ -3,12 +3,30 @@
     height: 100%;
     margin: auto;
 
+    &__direction {
+        background-color: #1251a0;
+    }
+
+    &__arrow {
+        width: 0;
+        height: 0;
+        margin: auto;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+
+        border-top: 10px solid #1672bf;
+    }
+
     &__source-currency, &__target-currency {
         height: 50%;
 
         .carousel, .slider, .slider-wrapper, .slide {
             height: 100%;
             text-align: left;
+        }
+
+        .control-dots {
+            padding-left: 0;
         }
     }
 

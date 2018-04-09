@@ -2,18 +2,20 @@ export function convert({ exchangingAmount, sourceCurrency, targetCurrency }, { 
     let convertedAmount;
     let rate;
 
+    const exchangingAmountNumber = parseFloat(exchangingAmount.replace(',', '.'));
+
     if (sourceCurrency === base) {
-        convertedAmount = rates[targetCurrency] * exchangingAmount;
+        convertedAmount = rates[targetCurrency] * exchangingAmountNumber;
         rate = rates[targetCurrency];
     }
 
     if (sourceCurrency === base && targetCurrency === base) {
-        convertedAmount = exchangingAmount;
+        convertedAmount = exchangingAmountNumber;
         rate = 1;
     }
 
     if (rates[sourceCurrency]) {
-        const amountInBaseCurrency = (1 / rates[sourceCurrency]) * exchangingAmount;
+        const amountInBaseCurrency = (1 / rates[sourceCurrency]) * exchangingAmountNumber;
         const rateToBaseCurrency = 1 / rates[sourceCurrency];
 
         convertedAmount = targetCurrency === base

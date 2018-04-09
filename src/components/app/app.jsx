@@ -38,7 +38,8 @@ export class App extends React.Component {
     renderRoutes() {
         return (
             <Switch>
-                <Route exact={ true } path='/exchange' component={ ExchangeScreenPage } />
+                <Route exact={ true } path='/' component={ ExchangeScreenPage } />
+                <Route path='*' component={ ExchangeScreenPage } />
             </Switch>
         );
     }

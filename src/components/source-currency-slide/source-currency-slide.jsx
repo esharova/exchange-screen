@@ -39,7 +39,7 @@ export default class SourceCurrencySlide extends React.Component {
 
     renderPanelButtons(cn) {
         const { sourceCurrency, targetCurrency, currencyRates } = this.props;
-        const { rate } = convert({ exchangingAmount: 0, sourceCurrency, targetCurrency }, currencyRates);
+        const { rate } = convert({ exchangingAmount: '0', sourceCurrency, targetCurrency }, currencyRates);
         return (
             <div className={ cn('panel-buttons') }>
                 <Button

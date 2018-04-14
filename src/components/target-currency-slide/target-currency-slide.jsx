@@ -3,6 +3,7 @@ import Type from 'prop-types';
 
 import cn from 'arui-feather/cn';
 import Label from 'arui-feather/label';
+import MoneyInput from 'arui-feather/money-input';
 
 import CurrencyIcon from '../currency-icon/currency-icon';
 import { convert } from '../../utils/converter';
@@ -15,7 +16,9 @@ export default class TargetCurrencySlide extends React.Component {
         account: Type.shape(),
         currencyRates: Type.shape(),
         exchangingAmount: Type.string,
-        sourceCurrency: Type.string
+        sourceCurrency: Type.string,
+        isSourceAmount: Type.bool,
+        onChangeExchangingAmount: Type.func
     }
 
     render(cn) {
@@ -27,9 +30,7 @@ export default class TargetCurrencySlide extends React.Component {
     }
 
     renderCurrency(cn) {
-        const {
-            account, exchangingAmount
-        } = this.props;
+        const { account } = this.props;
         return (
             <div className={ cn('currency') }>
                 <div className={ cn('currency-amount') }>
@@ -42,7 +43,7 @@ export default class TargetCurrencySlide extends React.Component {
                     <br />
                     { this.renderAccountAmount(cn) }
                 </div>
-                { exchangingAmount && this.renderExchangingAmount(cn) }
+                { this.renderExchangingAmount(cn) }
             </div>
         );
     }
@@ -64,21 +65,26 @@ export default class TargetCurrencySlide extends React.Component {
 
     renderExchangingAmount(cn) {
         const {
-            account, exchangingAmount, currencyRates, sourceCurrency
+            account, exchangingAmount, currencyRates, sourceCurrency, isSourceAmount
         } = this.props;
+        const convertedAmount = !isSourceAmount
+            ? exchangingAmount
+            : convert({
+                exchangingAmount,
+                sourceCurrency,
+                targetCurrency: account.currency
+            }, currencyRates).convertedAmount;
         return (
             <div className={ cn('exchanging-amount') } >
-                { this.renderOperationSign(cn) }
-                <Label
+                { exchangingAmount && this.renderOperationSign(cn) }
+                <MoneyInput
                     className={ cn('converted-amount') }
                     size='xl'
-                >
-                    { convert({
-                        exchangingAmount,
-                        sourceCurrency,
-                        targetCurrency: account.currency
-                    }, currencyRates).convertedAmount }
-                </Label>
+                    type='money'
+                    pattern='\d*'
+                    value={ convertedAmount }
+                    onChange={ this.props.onChangeExchangingAmount }
+                />
                 <br />
                 { this.renderRates(cn) }
             </div>
@@ -106,16 +112,16 @@ export default class TargetCurrencySlide extends React.Component {
             targetCurrency: currency
         }, currencyRates);
         return (
-            <Fragment>
+            <div className={ cn('rates') }>
                 <CurrencyIcon currency={ currency } />
-                <Label size='s' className={ cn('rates') }>
+                <Label size='s' className={ cn('amount') }>
                     { '1 = ' }
                 </Label>
                 <CurrencyIcon currency={ sourceCurrency } />
-                <Label size='s' className={ cn('rates') }>
+                <Label size='s' className={ cn('amount') }>
                     { (1 / rate).toFixed(2) }
                 </Label>
-            </Fragment>
+            </div>
         );
     }
 }

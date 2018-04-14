@@ -44,6 +44,7 @@ const GET_SOURCE_TARGET_CURRENCY = gql`
     sourceCurrency @client
     targetCurrency @client
     exchangingAmount @client
+    isSourceAmount @client
   }
 `;
 
@@ -58,6 +59,7 @@ export default class CharacteristicsPage extends React.Component {
 
     state = {
         sourcePosition: 0,
+        targetPosition: 0,
         baseCurrency: 'USD'
     }
 
@@ -97,74 +99,94 @@ export default class CharacteristicsPage extends React.Component {
     renderSourceAndTargetCurrency(cn, accounts, currencyRates) {
         return (
             <Query query={ GET_SOURCE_TARGET_CURRENCY }>
-                { ({ data: { sourceCurrency, exchangingAmount, targetCurrency } }) => (
-                    <Fragment>
-                        <Carousel
-                            className={ cn('source-currency') }
-                            selectedItem={ this.state.sourcePosition }
-                            onChange={ (sourcePosition) => {
-                                this.handleChangeSourceCurrency(sourcePosition, accounts);
-                            } }
-                            { ...this.customCarouselProps }
-                        >
-                            { accounts.map(account => (
-                                <SourceCurrencySlide
-                                    key={ account.number }
-                                    account={ account }
-                                    exchangingAmount={ exchangingAmount }
-                                    sourceCurrency={ sourceCurrency }
-                                    targetCurrency={ targetCurrency }
-                                    currencyRates={ currencyRates }
-                                    onChangeExchangingAmount={ this.handleChangeExchangingAmount }
-                                />
-                            )) }
-                        </Carousel>
-                        <div className={ cn('direction') }>
-                            <div className={ cn('arrow') } />
-                        </div>
-                        <Carousel
-                            className={ cn('target-currency') }
-                            onChange={ (targetPosition) => {
-                                this.handleChangeTargetCurrency(targetPosition, sourceCurrency, accounts);
-                            } }
-                            { ...this.customCarouselProps }
-                        >
-                            { this.getFilteredAccounts(accounts, sourceCurrency).map(account => (
-                                <TargetCurrencySlide
-                                    key={ account.number }
-                                    className={ cn('target-currency-slide') }
-                                    account={ account }
-                                    exchangingAmount={ exchangingAmount }
-                                    sourceCurrency={ sourceCurrency }
-                                    currencyRates={ currencyRates }
-                                />
-                            )) }
-                        </Carousel>
-                    </Fragment>
-                ) }
+                { ({
+                    data: {
+                        sourceCurrency, exchangingAmount, targetCurrency, isSourceAmount
+                    }
+                }) => {
+                    const currencySlideProps = {
+                        sourceCurrency,
+                        exchangingAmount,
+                        targetCurrency,
+                        isSourceAmount,
+                        currencyRates
+                    };
+                    return (
+                        <Fragment>
+                            <Carousel
+                                className={ cn('source-currency') }
+                                selectedItem={ this.state.sourcePosition }
+                                onChange={ (sourcePosition) => {
+                                    this.handleChangeSourceCurrency(sourcePosition, targetCurrency, accounts);
+                                } }
+                                { ...this.customCarouselProps }
+                            >
+                                { accounts.map(account => (
+                                    <SourceCurrencySlide
+                                        key={ account.number }
+                                        account={ account }
+                                        { ...currencySlideProps }
+                                        onChangeExchangingAmount={ (value) => {
+                                            this.handleChangeExchangingAmount(value, true);
+                                        } }
+                                    />
+                                )) }
+                            </Carousel>
+                            <div className={ cn('direction') }>
+                                <div className={ cn('arrow') } />
+                            </div>
+                            <Carousel
+                                className={ cn('target-currency') }
+                                selectedItem={ this.state.targetPosition }
+                                onChange={ (targetPosition) => {
+                                    this.handleChangeTargetCurrency(targetPosition, sourceCurrency, accounts);
+                                } }
+                                { ...this.customCarouselProps }
+                            >
+                                { this.getFilteredAccounts(accounts, sourceCurrency).map(account => (
+                                    <TargetCurrencySlide
+                                        key={ account.number }
+                                        className={ cn('target-currency-slide') }
+                                        account={ account }
+                                        { ...currencySlideProps }
+                                        onChangeExchangingAmount={ (value) => {
+                                            this.handleChangeExchangingAmount(value, false);
+                                        } }
+                                    />
+                                )) }
+                            </Carousel>
+                        </Fragment>
+                    );
+                } }
             </Query>
         );
     }
 
     @autobind
-    handleChangeSourceCurrency(sourcePosition, accounts) {
+    handleChangeSourceCurrency(sourcePosition, targetCurrency, accounts) {
+        const sourceCurrency = accounts[sourcePosition].currency;
         this.setState({ sourcePosition });
+        sourceCurrency === targetCurrency && this.handleChangeTargetCurrency(0, sourceCurrency, accounts);
         this.props.client.writeData({
-            data: { sourceCurrency: accounts[sourcePosition].currency }
+            data: { sourceCurrency }
         });
     }
 
     @autobind
     handleChangeTargetCurrency(targetPosition, sourceCurrency, accounts) {
+        this.setState({ targetPosition });
         this.props.client.writeData({
             data: { targetCurrency: this.getFilteredAccounts(accounts, sourceCurrency)[targetPosition].currency }
         });
     }
 
     @autobind
-    handleChangeExchangingAmount(value) {
+    handleChangeExchangingAmount(value, isSourceAmount) {
         this.props.client.writeData({
-            data: { exchangingAmount: value.replace(/ /g, '') }
+            data: {
+                exchangingAmount: value.replace(/ /g, ''),
+                isSourceAmount
+            }
         });
     }
 

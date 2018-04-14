@@ -27,7 +27,7 @@
     }
 
     &__currency-amount {
-        width: 50%;
+        width: 55%;
     }
 
     &__account-amount {
@@ -35,7 +35,7 @@
     }
 
     &__exchanging-amount {
-        width: 40%;
+        width: 45%;
         margin-top: -15px;
         float: right;
         font-size: 30px;

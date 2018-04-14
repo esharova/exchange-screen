@@ -9,26 +9,32 @@
     }
 
     &__currency-amount {
-        width: 40%;
+        width: 55%;
     }
 
     &__exchanging-amount {
-        text-align: right;
-        width: 55%;
+        margin-top: -15px;
+        width: 45%;
         float: right;
+        font-size: 30px;
     }
 
-    &__account-amount, &__rates, .icon {
+    &__account-amount, &__amount, .icon {
         opacity: .6;
+        vertical-align: middle;
     }
 
     &__operation {
-        margin-right: 10px;
         width: 5%;
     }
 
-    &__converted-amount {
+    &__converted-amount, &__rates {
         width: 85%;
+    }
+
+    &__rates {
+        text-align: right;
+        margin-top: 10px;
     }
 }
 

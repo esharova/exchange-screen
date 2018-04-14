@@ -3,7 +3,8 @@ import { withClientState } from 'apollo-link-state';
 const defaultState = {
     sourceCurrency: 'GBP',
     targetCurrency: 'EUR',
-    exchangingAmount: ''
+    exchangingAmount: '',
+    isSourceAmount: true
 };
 
 const stateLink = cache => withClientState({

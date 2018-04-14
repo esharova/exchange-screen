@@ -20,7 +20,8 @@ export default class SourceCurrencySlide extends React.Component {
         sourceCurrency: Type.string,
         targetCurrency: Type.string,
         onChangeExchangingAmount: Type.func,
-        exchangingAmount: Type.string
+        exchangingAmount: Type.string,
+        isSourceAmount: Type.bool
     };
 
     componentDidMount() {
@@ -99,7 +100,16 @@ export default class SourceCurrencySlide extends React.Component {
     }
 
     renderExchangingAmount(cn) {
-        const { exchangingAmount } = this.props;
+        const {
+            exchangingAmount, isSourceAmount, targetCurrency, account, currencyRates
+        } = this.props;
+        const convertedAmount = isSourceAmount
+            ? exchangingAmount
+            : convert({
+                exchangingAmount,
+                sourceCurrency: targetCurrency,
+                targetCurrency: account.currency
+            }, currencyRates).convertedAmount;
         return (
             <div className={ cn('exchanging-amount') } >
                 { exchangingAmount &&
@@ -116,7 +126,7 @@ export default class SourceCurrencySlide extends React.Component {
                     ref={ (moneyInput) => { this.moneyInput = moneyInput; } }
                     type='money'
                     pattern='\d*'
-                    value={ exchangingAmount }
+                    value={ convertedAmount }
                     onChange={ this.props.onChangeExchangingAmount }
                 />
             </div>

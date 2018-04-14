@@ -29,7 +29,7 @@ const RATES = gql`
     }
 `;
 
-const ACCOUNTS = gql`
+export const ACCOUNTS = gql`
     query accounts {
         accounts {
             number
@@ -39,7 +39,7 @@ const ACCOUNTS = gql`
     }
 `;
 
-const GET_SOURCE_TARGET_CURRENCY = gql`
+export const GET_SOURCE_TARGET_CURRENCY = gql`
   {
     sourceCurrency @client
     targetCurrency @client
@@ -104,12 +104,14 @@ export default class CharacteristicsPage extends React.Component {
                         sourceCurrency, exchangingAmount, targetCurrency, isSourceAmount
                     }
                 }) => {
+                    const targetAccount = accounts.find(account => account.currency === targetCurrency);
                     const currencySlideProps = {
                         sourceCurrency,
                         exchangingAmount,
                         targetCurrency,
                         isSourceAmount,
-                        currencyRates
+                        currencyRates,
+                        targetAccount
                     };
                     return (
                         <Fragment>
@@ -175,8 +177,11 @@ export default class CharacteristicsPage extends React.Component {
     @autobind
     handleChangeTargetCurrency(targetPosition, sourceCurrency, accounts) {
         this.setState({ targetPosition });
+        const targetAccount = this.getFilteredAccounts(accounts, sourceCurrency)[targetPosition];
         this.props.client.writeData({
-            data: { targetCurrency: this.getFilteredAccounts(accounts, sourceCurrency)[targetPosition].currency }
+            data: {
+                targetCurrency: targetAccount.currency
+            }
         });
     }
 

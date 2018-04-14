@@ -15,3 +15,9 @@ nock(config.server.api.accounts.uri)
     .delay(normalDelay)
     .reply(200, require('./accounts.json'));
 
+nock(config.server.api.exchangeCurrency.uri)
+    .persist()
+    .post('')
+    .delay(normalDelay)
+    .reply(200);
+

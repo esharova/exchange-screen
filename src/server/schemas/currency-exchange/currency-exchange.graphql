@@ -1,0 +1,10 @@
+input ExchangeInfo {
+    amount: String
+    sourceAccount: AccountInput
+    targetAccount: AccountInput
+}
+
+input AccountInput {
+    number: String
+    currency: String
+}

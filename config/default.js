@@ -40,6 +40,10 @@ module.exports = {
             accounts: {
                 uri: 'http://localhost:3001/accounts',
                 method: 'GET'
+            },
+            exchangeCurrency: {
+                uri: 'http://localhost:3001/exchangeCurrency',
+                method: 'POST'
             }
         }
     },

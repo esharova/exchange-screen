@@ -1,6 +1,10 @@
 import React, { Fragment } from 'react';
 import Type from 'prop-types';
 
+import { Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
+import { autobind } from 'core-decorators';
+
 import cn from 'arui-feather/cn';
 import MoneyInput from 'arui-feather/money-input';
 import Label from 'arui-feather/label';
@@ -11,6 +15,12 @@ import CurrencyIcon from '../currency-icon/currency-icon';
 import { convert } from '../../utils/converter';
 
 import './source-currency-slide.css';
+
+const EXCHANGE_CURRENCY = gql`
+    mutation exchangeCurrency($exchangeInfo: ExchangeInfo!) {
+        exchangeCurrency(exchangeInfo: $exchangeInfo)
+    }
+`;
 
 @cn('source-currency-slide')
 export default class SourceCurrencySlide extends React.Component {
@@ -57,10 +67,17 @@ export default class SourceCurrencySlide extends React.Component {
                         { rate }
                     </Label>
                 </div>
-                <Button
-                    className={ cn('exchange') }
-                    text='Exchange'
-                />
+                <Mutation mutation={ EXCHANGE_CURRENCY }>
+                    { exchangeCurrency => (
+                        <Button
+                            className={ cn('exchange') }
+                            text='Exchange'
+                            onClick={ () => {
+                                this.handleExchange(exchangeCurrency);
+                            } }
+                        />
+                    ) }
+                </Mutation>
             </div>
         );
     }
@@ -100,16 +117,8 @@ export default class SourceCurrencySlide extends React.Component {
     }
 
     renderExchangingAmount(cn) {
-        const {
-            exchangingAmount, isSourceAmount, targetCurrency, account, currencyRates
-        } = this.props;
-        const convertedAmount = isSourceAmount
-            ? exchangingAmount
-            : convert({
-                exchangingAmount,
-                sourceCurrency: targetCurrency,
-                targetCurrency: account.currency
-            }, currencyRates).convertedAmount;
+        const { exchangingAmount } = this.props;
+        const { convertedAmount } = this.getConvertationInfo();
         return (
             <div className={ cn('exchanging-amount') } >
                 { exchangingAmount &&
@@ -131,5 +140,43 @@ export default class SourceCurrencySlide extends React.Component {
                 />
             </div>
         );
+    }
+
+    @autobind
+    handleExchange(exchangeAmountMutation) {
+        exchangeAmountMutation({
+            variables: {
+                exchangeInfo: this.getExchangeInfo()
+            }
+        });
+    }
+
+    getExchangeInfo() {
+        const { convertedAmount } = this.getConvertationInfo();
+        const { account } = this.props;
+        return {
+            amount: convertedAmount,
+            sourceAccount: {
+                number: account.number,
+                currency: account.currency
+            },
+            targetAccount: {
+                currency: '',
+                number: '3253646'
+            }
+        };
+    }
+
+    getConvertationInfo() {
+        const {
+            exchangingAmount, isSourceAmount, targetCurrency, account, currencyRates
+        } = this.props;
+        return isSourceAmount
+            ? exchangingAmount
+            : convert({
+                exchangingAmount,
+                sourceCurrency: targetCurrency,
+                targetCurrency: account.currency
+            }, currencyRates);
     }
 }

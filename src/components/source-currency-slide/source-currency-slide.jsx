@@ -36,7 +36,8 @@ export default class SourceCurrencySlide extends React.Component {
         onChangeExchangingAmount: Type.func,
         exchangingAmount: Type.string,
         isSourceAmount: Type.bool,
-        targetAccount: Type.shape()
+        targetAccount: Type.shape(),
+        onExchangeAmount: Type.func
     };
 
     state = {
@@ -169,6 +170,7 @@ export default class SourceCurrencySlide extends React.Component {
                     exchangeInfo: omit(this.getExchangeInfo(), 'amountInTargetCurrency')
                 }
             });
+            this.props.onExchangeAmount();
         }
     }
 

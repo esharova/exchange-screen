@@ -8,6 +8,8 @@ import { Query, withApollo } from 'react-apollo';
 
 import cn from 'arui-feather/cn';
 import Spin from 'arui-feather/spin';
+import Label from 'arui-feather/label';
+import Notification from 'arui-feather/notification';
 import { Carousel } from 'react-responsive-carousel';
 
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
@@ -60,7 +62,8 @@ export default class CharacteristicsPage extends React.Component {
     state = {
         sourcePosition: 0,
         targetPosition: 0,
-        baseCurrency: 'USD'
+        baseCurrency: 'USD',
+        notification: {}
     }
 
     customCarouselProps = {
@@ -72,6 +75,7 @@ export default class CharacteristicsPage extends React.Component {
     }
 
     render(cn) {
+        const { notification } = this.state;
         return (
             <Query query={ ACCOUNTS } >
                 { ({ loading: loadingAccounts, data: { accounts } }) => (
@@ -86,6 +90,14 @@ export default class CharacteristicsPage extends React.Component {
                             }
                             return (
                                 <div className={ cn() }>
+                                    <Notification
+                                        visible={ notification.visible }
+                                        stickTo='right'
+                                        status='ok'
+                                        onCloserClick={ this.handleCloseNotification }
+                                    >
+                                        <Label>{ notification.text }</Label>
+                                    </Notification>
                                     { this.renderSourceAndTargetCurrency(cn, accounts, currencyRates) }
                                 </div>
                             );
@@ -93,6 +105,7 @@ export default class CharacteristicsPage extends React.Component {
                     </Query>
                 ) }
             </Query>
+
         );
     }
 
@@ -131,6 +144,7 @@ export default class CharacteristicsPage extends React.Component {
                                         onChangeExchangingAmount={ (value) => {
                                             this.handleChangeExchangingAmount(value, true);
                                         } }
+                                        onExchangeAmount={ this.handleExchangeAmount }
                                     />
                                 )) }
                             </Carousel>
@@ -191,6 +205,26 @@ export default class CharacteristicsPage extends React.Component {
             data: {
                 exchangingAmount: value.replace(/ /g, ''),
                 isSourceAmount
+            }
+        });
+    }
+
+    @autobind
+    handleExchangeAmount() {
+        this.setState({
+            notification: {
+                visible: true,
+                text: 'Перевод успешно выполнен'
+            }
+        });
+    }
+
+    @autobind
+    handleCloseNotification() {
+        this.setState({
+            notification: {
+                ...this.state.notification,
+                visible: false
             }
         });
     }

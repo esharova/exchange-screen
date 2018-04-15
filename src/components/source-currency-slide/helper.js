@@ -9,13 +9,13 @@ export function updateAccountInfo(cache, {
         if (account.currency === sourceAccount.currency) {
             return {
                 ...account,
-                amount: (account.amount - parseFloat(amount)).toFixed(2)
+                amount: +(account.amount - parseFloat(amount)).toFixed(2)
             };
         }
         if (account.currency === targetAccount.currency) {
             return {
                 ...account,
-                amount: (account.amount + parseFloat(amountInTargetCurrency)).toFixed(2)
+                amount: +(account.amount + parseFloat(amountInTargetCurrency)).toFixed(2)
             };
         }
         return account;

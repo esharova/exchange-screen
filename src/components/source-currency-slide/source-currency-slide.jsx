@@ -16,6 +16,7 @@ import CurrencyIcon from '../currency-icon/currency-icon';
 
 import { convert } from '../../utils/converter';
 import { updateAccountInfo } from './helper';
+import { createExchangeAmountValidator } from './validator';
 
 import './source-currency-slide.css';
 
@@ -37,6 +38,16 @@ export default class SourceCurrencySlide extends React.Component {
         isSourceAmount: Type.bool,
         targetAccount: Type.shape()
     };
+
+    state = {
+        exchangingAmountError: ''
+    }
+
+
+    constructor(props, context) {
+        super(props, context);
+        this.validator = createExchangeAmountValidator();
+    }
 
     componentDidMount() {
         const { account, sourceCurrency } = this.props;
@@ -138,6 +149,7 @@ export default class SourceCurrencySlide extends React.Component {
                     size='xl'
                     ref={ (moneyInput) => { this.moneyInput = moneyInput; } }
                     type='money'
+                    error={ this.state.exchangingAmountError }
                     pattern='\d*'
                     value={ convertedAmount }
                     onChange={ this.props.onChangeExchangingAmount }
@@ -148,11 +160,16 @@ export default class SourceCurrencySlide extends React.Component {
 
     @autobind
     handleExchange(exchangeAmountMutation) {
-        exchangeAmountMutation({
-            variables: {
-                exchangeInfo: omit(this.getExchangeInfo(), 'amountInTargetCurrency')
-            }
-        });
+        const { convertedAmount } = this.getConvertationInfo();
+        const exchangingAmountError = this.validator(convertedAmount, this.props.account.amount);
+        this.setState({ exchangingAmountError });
+        if (!exchangingAmountError) {
+            exchangeAmountMutation({
+                variables: {
+                    exchangeInfo: omit(this.getExchangeInfo(), 'amountInTargetCurrency')
+                }
+            });
+        }
     }
 
     @autobind
@@ -172,8 +189,8 @@ export default class SourceCurrencySlide extends React.Component {
             targetCurrency
         }, currencyRates).convertedAmount;
         return {
-            amount: convertedAmount,
-            amountInTargetCurrency,
+            amount: convertedAmount.replace(',', '.'),
+            amountInTargetCurrency: amountInTargetCurrency.replace(',', '.'),
             sourceAccount: {
                 number: account.number,
                 currency: account.currency
